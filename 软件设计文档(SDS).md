@@ -144,7 +144,9 @@ wepy内的设计思想就包含了MVVM，因此小程序内页面和组件模块
 1. **Python Flask**
     * Python的框架基本都是简单容易，能迅速上手，并实现快速开发，而Flask相比于其他Python内部的服务器框架，更为轻量、处理异步事件更为容易，而且更受欢迎、社区维护更加持续，社区更为活跃。
     * Flask配套的有很多方便的框架，比如吸收了另一个非常有名的Python ORM框架SqlAlchemy的Flask-SqlAlchemy，又或者另一个文件上传的框架Flask-Uploads。使用这样成熟的框架，可以提供更佳的鲁棒性和便利性。
-    * 相比于其他的可以作为后台的语言(Java/Nodejs)等，Python的学习成本更低，而且队伍里组员对Python更为熟悉。
+    * 相比于其他的可以作为后台的语言(Java/Nodejs)等，Python的学习成本更低，而且队伍里组员对Python更为熟悉，且Flask 以注解的形式进行路由绑定，直观易学。
+    * 和 Python 内部的服务器框架对比：相对比于 Django, Flask 框架更加轻量；相比于 tornado，Flask 处理异步消息更加友好；相比于 webpy, Flask 的社区维护更加持续。
+    * 和 Java, C++ 语言相比较，动态编程语言对于开发这种小型的服务器的迭代速度更快。
 2. **MySql**
     * 免费。
     * 非常成熟，非常受欢迎，更新频繁，社区活跃，这些都表现了MySQL的生命力。
@@ -163,7 +165,7 @@ wepy内的设计思想就包含了MVVM，因此小程序内页面和组件模块
 
 ### 2.3 模块划分
 
-模块划分上是基于MVC模式的，其中V(View)这一模块属于前端，就不在这里表示了，而MC这两块，即Model和Controller两块则在下图中的db和responses中。
+模块划分上是基于MVC模式的，其中V(View)这一模块属于前端，就不在这里表示了，而MC这两块，即Model和Controller两块则在下图中的db和responses中。Web Server 服务器程序上主要分成 app.py + response的业务逻辑层和 db 的数据持久化模块，此外，还增加一个tools模块作为一个通用工具层，供逻辑层调用。
 
 ```
 │  app.py				主程序入口
@@ -220,10 +222,10 @@ wepy内的设计思想就包含了MVVM，因此小程序内页面和组件模块
         * Problem: 表示任务关联的Problem，只要Task表示一个问卷，那么Problem就可以与Task关联起来，这个不是硬性要求，需要程序符合规范，是扩充的一部分，主要包含问题的内容与所有答案。
         * Answer: 表示答案，与Problem以及Accept关联起来，包含答案主体。
     * 服务层则封装了所有逻辑上对数据层进行的操作，只有一个文件，那就是DbHelper，用于方便操作数据。
-* responses中就是Controller层了，通过http/https这些网络协议获取从View中发送过来的请求，然后操作Model，获取响应数据后将这些返回给View。
+* responses 和 app.py 就是Controller层了，通过http/https这些网络协议获取从View中发送过来的请求，然后操作Model，获取响应数据后将这些返回给View。
 * 其余模块
     * 其实主要就是tools里的utils了，里面有一些常用的通用操作。
-    * 还有一些顶层文件，如config.py、app.py，这些是全模块共享的，作为多模块通信的基础。
+    * 还有一些顶层文件，如config.py，是全模块共享的，作为多模块通信的基础。
 
 ### 2.4 软件设计技术
 
